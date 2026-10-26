@@ -1,0 +1,3 @@
+package az.iktex.organization.structure.testders.repository;
+import az.iktex.organization.structure.testders.entity.Course; import org.springframework.data.jpa.repository.*; import org.springframework.data.repository.query.Param; import java.util.*;
+public interface CourseRepository extends JpaRepository<Course,Long> { boolean existsByTitle(String title); List<Course> findAllByTeacher(String teacher); @Query("select distinct c from Course c left join fetch c.students where c.id=:id") Optional<Course> findDetailById(@Param("id") Long id); @Query("select count(s) from Student s join s.courses c where c.id=:id") long countStudents(@Param("id") Long id); }

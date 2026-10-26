@@ -1,0 +1,15 @@
+
+# Gradle
+.gradle/
+build/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Local files
+.env
+*.log
+
+# Windows
+Thumbs.db

@@ -1,0 +1,3 @@
+package az.iktex.organization.structure.testders.repository;
+import az.iktex.organization.structure.testders.entity.AuthorBook; import org.springframework.data.jpa.repository.*; import java.util.*;
+public interface AuthorBookRepository extends JpaRepository<AuthorBook,Long> { boolean existsByAuthorIdAndBookId(Long authorId,Long bookId); Optional<AuthorBook> findByAuthorIdAndBookId(Long authorId,Long bookId); List<AuthorBook> findAllByAuthorId(Long authorId); List<AuthorBook> findAllByBookId(Long bookId); @Query("select ab from AuthorBook ab join fetch ab.author join fetch ab.book") List<AuthorBook> findAllDetailed(); }

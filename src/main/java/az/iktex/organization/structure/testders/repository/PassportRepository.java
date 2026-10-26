@@ -1,0 +1,3 @@
+package az.iktex.organization.structure.testders.repository;
+import az.iktex.organization.structure.testders.entity.Passport; import org.springframework.data.jpa.repository.*; import java.util.*;
+public interface PassportRepository extends JpaRepository<Passport,Long> { boolean existsBySerialNumber(String serialNumber); Optional<Passport> findBySerialNumber(String serialNumber); List<Passport> findAllByCountry(String country); @Query("select p from Passport p join fetch p.user") List<Passport> findAllWithUser(); @Query("select count(p) from Passport p") long totalPassports(); }

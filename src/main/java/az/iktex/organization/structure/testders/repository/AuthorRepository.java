@@ -1,0 +1,3 @@
+package az.iktex.organization.structure.testders.repository;
+import az.iktex.organization.structure.testders.entity.Author; import org.springframework.data.jpa.repository.*; import org.springframework.data.repository.query.Param; import java.util.*;
+public interface AuthorRepository extends JpaRepository<Author,Long> { boolean existsByNameAndSurname(String name,String surname); List<Author> findAllByCountry(String country); @Query("select a from Author a where a.authorBooks is empty") List<Author> findWithoutBooks(); @Query("select distinct a from Author a left join fetch a.authorBooks ab left join fetch ab.book where a.id=:id") Optional<Author> findDetailById(@Param("id") Long id); }

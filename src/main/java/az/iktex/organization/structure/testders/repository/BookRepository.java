@@ -1,0 +1,3 @@
+package az.iktex.organization.structure.testders.repository;
+import az.iktex.organization.structure.testders.entity.Book; import org.springframework.data.jpa.repository.*; import org.springframework.data.repository.query.Param; import java.math.BigDecimal; import java.util.*;
+public interface BookRepository extends JpaRepository<Book,Long> { boolean existsByTitle(String title); List<Book> findAllByTitleContainingIgnoreCase(String title); List<Book> findAllByPriceLessThanEqualOrderByPriceAsc(BigDecimal price); @Query("select distinct b from Book b left join fetch b.authorBooks ab left join fetch ab.author where b.id=:id") Optional<Book> findDetailById(@Param("id") Long id); }
