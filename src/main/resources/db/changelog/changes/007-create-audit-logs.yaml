@@ -1,0 +1,42 @@
+
+databaseChangeLog:
+  - changeSet:
+      id: 007-1
+      author: orxankazimov055-bot
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: audit_logs
+      changes:
+        - createTable:
+            tableName: audit_logs
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_audit_logs
+                    nullable: false
+
+              - column:
+                  name: action
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: description
+                  type: VARCHAR(500)
+
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+      rollback:
+        - dropTable:
+            tableName: audit_logs

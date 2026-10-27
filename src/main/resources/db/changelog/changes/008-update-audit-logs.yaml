@@ -1,0 +1,41 @@
+
+databaseChangeLog:
+  - changeSet:
+      id: 008-1
+      author: orxankazimov055-bot
+      changes:
+        - modifyDataType:
+            tableName: audit_logs
+            columnName: action
+            newDataType: VARCHAR(50)
+
+        - renameColumn:
+            tableName: audit_logs
+            oldColumnName: description
+            newColumnName: message
+            columnDataType: VARCHAR(500)
+
+        - addColumn:
+            tableName: audit_logs
+            columns:
+              - column:
+                  name: entity_name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: entity_id
+                  type: BIGINT
+
+              - column:
+                  name: status
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+
+        - sql:
+            sql: >
+              ALTER TABLE audit_logs
+              ADD CONSTRAINT chk_audit_status
+              CHECK (status IN ('SUCCESS', 'FAILED'))

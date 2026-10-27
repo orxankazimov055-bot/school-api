@@ -1,0 +1,430 @@
+{
+  "info": {
+    "_postman_id": "bfff3fe0-a968-432a-afe0-0c0dbf6cac8f",
+    "name": "School API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58714855",
+    "_collection_link": "https://go.postman.co/collection/58714855-bfff3fe0-a968-432a-afe0-0c0dbf6cac8f?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Get All Users",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/test-demo/api/users",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "test-demo",
+            "api",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get User By ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/test-demo/api/users/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "test-demo",
+            "api",
+            "users",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create User",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "\r\n{\r\n  \"name\": \"Orxan\",\r\n  \"surname\": \"Kazimov\",\r\n  \"email\": \"orxan.test@example.com\",\r\n  \"gender\": \"MALE\"\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/test-demo/api/users",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "test-demo",
+            "api",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get User By Email",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/test-demo/api/users/by-email?email=orxan.test@example.com",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "test-demo",
+            "api",
+            "users",
+            "by-email"
+          ],
+          "query": [
+            {
+              "key": "email",
+              "value": "orxan.test@example.com"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Users Without Passport",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/test-demo/api/users/without-passport",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "test-demo",
+            "api",
+            "users",
+            "without-passport"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Add Passport",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "\r\n{\r\n  \"serialNumber\": \"AA1234567\",\r\n  \"issueDate\": \"2023-01-15\",\r\n  \"country\": \"Azerbaijan\"\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/test-demo/api/users/1/passport",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "test-demo",
+            "api",
+            "users",
+            "1",
+            "passport"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Passport",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/test-demo/api/users/1/passport",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "test-demo",
+            "api",
+            "users",
+            "1",
+            "passport"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Departments",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/test-demo/api/departments",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "test-demo",
+            "api",
+            "departments"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Department By ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/test-demo/api/departments/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "test-demo",
+            "api",
+            "departments",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Employees",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/test-demo/api/employees",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "test-demo",
+            "api",
+            "employees"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Employee By ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/test-demo/api/employees/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "test-demo",
+            "api",
+            "employees",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Employee",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "\r\n{\r\n  \"name\": \"Elvin\",\r\n  \"surname\": \"Aliyev\",\r\n  \"salary\": 2500.00\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/test-demo/api/employees/department/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "test-demo",
+            "api",
+            "employees",
+            "department",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Transfer Employee - REQUIRED",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "\r\n{\r\n  \"departmentId\": 2,\r\n  \"raisePercent\": 5\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/test-demo/api/employees/11/transfer",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "test-demo",
+            "api",
+            "employees",
+            "11",
+            "transfer"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Reserve Seat - MANDATORY",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/test-demo/api/tx-demo/reserve-seat/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "test-demo",
+            "api",
+            "tx-demo",
+            "reserve-seat",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Student Enroll - REQUIRED + MANDATORY",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/test-demo/api/students/1/enroll/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "test-demo",
+            "api",
+            "students",
+            "1",
+            "enroll",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Isolation - READ_COMMITTED",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/test-demo/api/isolation/read-committed",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "test-demo",
+            "api",
+            "isolation",
+            "read-committed"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Isolation - SERIALIZABLE",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/test-demo/api/isolation/serializable",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "test-demo",
+            "api",
+            "isolation",
+            "serializable"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
