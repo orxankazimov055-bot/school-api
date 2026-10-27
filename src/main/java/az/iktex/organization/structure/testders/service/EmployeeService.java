@@ -13,8 +13,10 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -25,8 +27,9 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final DepartmentRepository departmentRepository;
     private final EmployeeMapper employeeMapper;
+    private final SalaryService salaryService;
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public EmployeeResponse create(
             Long departmentId,
             EmployeeRequest request) {
@@ -39,7 +42,6 @@ public class EmployeeService {
                 );
 
         Employee employee = employeeMapper.toEntity(request);
-
         employee.setDepartment(department);
 
         Employee saved = employeeRepository.save(employee);
@@ -66,7 +68,7 @@ public class EmployeeService {
         );
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public EmployeeResponse update(
             Long id,
             EmployeeRequest request) {
@@ -83,7 +85,7 @@ public class EmployeeService {
         return employeeMapper.toResponse(employee);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public void delete(Long id) {
 
         Employee employee = employeeRepository.findById(id)
@@ -94,5 +96,34 @@ public class EmployeeService {
                 );
 
         employeeRepository.delete(employee);
+    }
+
+    // C1: REQUIRED - departament ve maas eyni tranzaksiyadadir.
+    // Maas limiti asildiqda her iki deyisiklik rollback olunur.
+    @Transactional(propagation = Propagation.REQUIRED)
+    public EmployeeResponse transfer(
+            Long employeeId,
+            Long departmentId,
+            BigDecimal raisePercent) {
+
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() ->
+                        new EntityNotFoundException(
+                                "Employee tapilmadi: " + employeeId
+                        )
+                );
+
+        Department department = departmentRepository.findById(departmentId)
+                .orElseThrow(() ->
+                        new EntityNotFoundException(
+                                "Department tapilmadi: " + departmentId
+                        )
+                );
+
+        employee.setDepartment(department);
+
+        salaryService.raise(employee, raisePercent);
+
+        return employeeMapper.toResponse(employee);
     }
 }

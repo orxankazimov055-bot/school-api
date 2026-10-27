@@ -1,0 +1,118 @@
+
+databaseChangeLog:
+  - changeSet:
+      id: 100-1
+      author: orxankazimov055-bot
+      context: dev
+      changes:
+        - insert:
+            tableName: departments
+            columns:
+              - column: { name: name, value: IT }
+              - column: { name: location, value: Baku }
+              - column: { name: phone, value: "0121111111" }
+
+        - insert:
+            tableName: departments
+            columns:
+              - column: { name: name, value: HR }
+              - column: { name: location, value: Baku }
+              - column: { name: phone, value: "0122222222" }
+
+        - insert:
+            tableName: departments
+            columns:
+              - column: { name: name, value: Finance }
+              - column: { name: location, value: Sumqayit }
+              - column: { name: phone, value: "0123333333" }
+
+  - changeSet:
+      id: 100-2
+      author: orxankazimov055-bot
+      context: dev
+      changes:
+        - sql:
+            sql: |
+              INSERT INTO employees (name, surname, salary, department_id)
+              SELECT v.name, v.surname, v.salary, d.id
+              FROM (VALUES
+                ('Ali','Aliyev',1800.00,'IT'),
+                ('Veli','Velizade',2100.00,'IT'),
+                ('Aysel','Memmedova',2300.00,'IT'),
+                ('Murad','Hesenov',1600.00,'IT'),
+                ('Nigar','Quliyeva',1400.00,'HR'),
+                ('Leyla','Resulova',1700.00,'HR'),
+                ('Orxan','Kazimov',1900.00,'HR'),
+                ('Emin','Memmedov',2500.00,'Finance'),
+                ('Sevda','Eliyeva',2200.00,'Finance'),
+                ('Kamran','Huseynov',2700.00,'Finance')
+              ) AS v(name, surname, salary, department_name)
+              JOIN departments d ON d.name = v.department_name;
+
+  - changeSet:
+      id: 100-3
+      author: orxankazimov055-bot
+      context: dev
+      changes:
+        - sql:
+            sql: |
+              INSERT INTO courses (title, credit, teacher, capacity)
+              VALUES
+                ('Java Backend', 6, 'Ruslan', 30),
+                ('PostgreSQL', 4, 'Elvin', 25),
+                ('Spring Boot', 6, 'Ruslan', 20),
+                ('Docker', 3, 'Murad', 15),
+                ('Hibernate', 5, 'Elvin', 30);
+
+  - changeSet:
+      id: 100-4
+      author: orxankazimov055-bot
+      context: dev
+      changes:
+        - sql:
+            sql: |
+              INSERT INTO students (name, surname, age)
+              VALUES
+                ('Ali','Memmedov',20),
+                ('Aysel','Aliyeva',21),
+                ('Murad','Quliyev',22),
+                ('Nigar','Hesenova',19),
+                ('Emin','Resulov',23),
+                ('Leyla','Huseynova',20),
+                ('Kamran','Eliyev',24),
+                ('Sevda','Memmedova',21),
+                ('Tural','Qasimov',22),
+                ('Gunel','Ismayilova',20);
+
+  - changeSet:
+      id: 100-5
+      author: orxankazimov055-bot
+      context: dev
+      changes:
+        - sql:
+            sql: |
+              INSERT INTO authors (name, surname, country)
+              VALUES
+                ('George','Orwell','United Kingdom'),
+                ('Jane','Austen','United Kingdom'),
+                ('Franz','Kafka','Czech Republic'),
+                ('Fyodor','Dostoevsky','Russia'),
+                ('Victor','Hugo','France');
+
+  - changeSet:
+      id: 100-6
+      author: orxankazimov055-bot
+      context: dev
+      changes:
+        - sql:
+            sql: |
+              INSERT INTO books (title, price, page_count)
+              VALUES
+                ('1984', 18.50, 328),
+                ('Animal Farm', 12.00, 112),
+                ('Pride and Prejudice', 16.00, 432),
+                ('Emma', 17.50, 474),
+                ('The Trial', 14.00, 255),
+                ('The Metamorphosis', 10.00, 96),
+                ('Crime and Punishment', 22.00, 671),
+                ('Les Miserables', 29.00, 1232);

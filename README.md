@@ -111,3 +111,94 @@ Qeyd: Yuxarıdakı siyahı indiyədək yoxladığımız endpoint-ləri əhatə e
 ## Postman
 
 API endpoint-lərinin testləri Postman vasitəsilə aparılır. Postman collection JSON faylı layihə ilə birlikdə repoya əlavə olunmalıdır.
+
+
+## Praktiki Tapşırıq 2
+
+### Liquibase
+
+Verilənlər bazasının strukturu Liquibase vasitəsilə idarə olunur.
+
+- Hibernate ddl-auto: validate
+- Liquibase changeLog: db/changelog/db.changelog-master.yaml
+- Tətbiq olunmuş changeSet sayı: 32
+- audit_logs cədvəli və status CHECK constraint-i yaradılıb.
+
+### Hibernate Cache
+
+Layihədə Hibernate JCache və Ehcache istifadə olunur.
+
+- Second-Level Cache aktivdir.
+- Query Cache aktivdir.
+- DepartmentCacheTest: PASSED
+- AuthorQueryCacheTest: PASSED
+
+Test nəticələri:
+
+- L2 Cache Hit: 2
+- L2 Cache Miss: 0
+- Query Cache Hit: 1
+- Query Cache Miss: 1
+
+### Transaction Propagation
+
+#### REQUIRED
+
+POST /api/employees/{id}/transfer
+
+Nümunə JSON:
+
+{
+"departmentId": 2,
+"raisePercent": 5
+}
+
+Transfer zamanı şöbə və maaş birlikdə dəyişir.
+Maaş 10000 AZN limitini keçərsə, əməliyyat rollback edilir.
+
+#### REQUIRES_NEW
+
+AuditLogService ayrıca transaction istifadə edir.
+
+Uğurlu əməliyyat SUCCESS, uğursuz əməliyyat
+FAILED statusu ilə audit_logs cədvəlinə yazılır.
+
+Əsas transaction rollback olsa belə,
+FAILED audit qeydi bazada qalır.
+
+#### MANDATORY
+
+POST /api/students/{studentId}/enroll/{courseId}
+
+Mövcud transaction daxilində reserveSeat metodu işləyir.
+
+POST /api/tx-demo/reserve-seat/{courseId}
+
+Transaction olmadıqda 409 Conflict qaytarılır.
+
+### Transaction Isolation
+
+READ_COMMITTED:
+
+GET /api/isolation/read-committed
+
+SERIALIZABLE:
+
+GET /api/isolation/serializable
+
+Hər iki endpoint test edilib və 200 OK qaytarıb.
+
+PostgreSQL-də REPEATABLE READ davranışı
+iki SQL konsolu vasitəsilə də yoxlanılıb.
+
+### Testlərin işə salınması
+
+Windows:
+
+gradlew.bat test
+
+Linux / macOS:
+
+./gradlew test
+
+Son test nəticəsi: BUILD SUCCESSFUL

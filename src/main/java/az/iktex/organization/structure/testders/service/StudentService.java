@@ -23,12 +23,12 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final CourseRepository courseRepository;
     private final StudentMapper studentMapper;
+    private final EnrollmentService enrollmentService;
 
     @Transactional
     public StudentResponse create(StudentRequest request) {
 
         Student student = studentMapper.toEntity(request);
-
         Student saved = studentRepository.save(student);
 
         return studentMapper.toResponse(saved);
@@ -62,6 +62,26 @@ public class StudentService {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() ->
                         new RuntimeException("Course tapilmadi"));
+
+        student.addCourse(course);
+
+        return studentMapper.toDetailResponse(student);
+    }
+
+    // C3 - MANDATORY
+    @Transactional
+    public StudentResponse enroll(Long studentId, Long courseId) {
+
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() ->
+                        new RuntimeException("Student tapilmadi: " + studentId));
+
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() ->
+                        new RuntimeException("Course tapilmadi: " + courseId));
+
+        // MANDATORY metodu movcud transaction daxilinde cagiririq
+        enrollmentService.reserveSeat(courseId);
 
         student.addCourse(course);
 

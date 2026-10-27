@@ -1,0 +1,8 @@
+
+databaseChangeLog:
+  - changeSet:
+      id: 005-1
+      author: orxankazimov055-bot
+      changes:
+        - tagDatabase:
+            tag: v1.0

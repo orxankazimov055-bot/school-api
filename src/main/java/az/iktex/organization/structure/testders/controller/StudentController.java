@@ -18,6 +18,7 @@ public class StudentController {
 
     private final StudentService studentService;
 
+    // Yeni telebe yaratmaq
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public StudentResponse create(
@@ -26,12 +27,14 @@ public class StudentController {
         return studentService.create(request);
     }
 
+    // Butun telebeleri getirmek
     @GetMapping
     public List<StudentResponse> getAll() {
 
         return studentService.getAll();
     }
 
+    // ID ile telebe tapmaq
     @GetMapping("/{id}")
     public StudentResponse getById(
             @PathVariable Long id) {
@@ -39,6 +42,7 @@ public class StudentController {
         return studentService.getById(id);
     }
 
+    // Telebeni kursa elave etmek
     @PostMapping("/{studentId}/courses/{courseId}")
     public StudentResponse addCourse(
             @PathVariable Long studentId,
@@ -47,6 +51,17 @@ public class StudentController {
         return studentService.addCourse(studentId, courseId);
     }
 
+    // C3 - MANDATORY
+    // Transaction StudentService daxilinde acilir
+    @PostMapping("/{studentId}/enroll/{courseId}")
+    public StudentResponse enroll(
+            @PathVariable Long studentId,
+            @PathVariable Long courseId) {
+
+        return studentService.enroll(studentId, courseId);
+    }
+
+    // Telebeni silmek
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {

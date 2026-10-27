@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://www.ehcache.org/v3"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core.xsd">
+
+    <cache-template name="default">
+        <expiry>
+            <ttl unit="minutes">10</ttl>
+        </expiry>
+        <heap unit="entries">1000</heap>
+    </cache-template>
+
+    <cache alias="default-update-timestamps-region"
+           uses-template="default"/>
+
+    <cache alias="default-query-results-region"
+           uses-template="default"/>
+
+    <cache alias="az.iktex.organization.structure.testders.entity.Department"
+           uses-template="default"/>
+
+    <cache alias="az.iktex.organization.structure.testders.entity.Course"
+           uses-template="default"/>
+
+    <cache alias="az.iktex.organization.structure.testders.entity.Author"
+           uses-template="default"/>
+
+    <cache alias="az.iktex.organization.structure.testders.entity.Book"
+           uses-template="default"/>
+
+    <cache alias="az.iktex.organization.structure.testders.entity.AuthorBook"
+           uses-template="default"/>
+
+    <cache alias="az.iktex.organization.structure.testders.entity.Author.authorBooks"
+           uses-template="default"/>
+
+    <cache alias="az.iktex.organization.structure.testders.entity.Book.authorBooks"
+           uses-template="default"/>
+
+</config>
