@@ -8,6 +8,194 @@
   },
   "item": [
     {
+      "name": "Cache",
+      "item": [
+        {
+          "name": "Get Department - L2 Cache",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/test-demo/api/departments/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "test-demo",
+                "api",
+                "departments",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Authors - Query Cache",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/test-demo/api/authors/by-country?country=United%20Kingdom",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "test-demo",
+                "api",
+                "authors",
+                "by-country"
+              ],
+              "query": [
+                {
+                  "key": "country",
+                  "value": "United Kingdom"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Transactions",
+      "item": [
+        {
+          "name": "Transfer Employee - REQUIRED",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "\r\n{\r\n  \"departmentId\": 2,\r\n  \"raisePercent\": 5\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/test-demo/api/employees/11/transfer",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "test-demo",
+                "api",
+                "employees",
+                "11",
+                "transfer"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reserve Seat - MANDATORY",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/test-demo/api/tx-demo/reserve-seat/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "test-demo",
+                "api",
+                "tx-demo",
+                "reserve-seat",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Student Enroll - REQUIRED + MANDATORY",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/test-demo/api/students/1/enroll/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "test-demo",
+                "api",
+                "students",
+                "1",
+                "enroll",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Isolation",
+      "item": [
+        {
+          "name": "Isolation - READ_COMMITTED",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/test-demo/api/isolation/read-committed",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "test-demo",
+                "api",
+                "isolation",
+                "read-committed"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Isolation - SERIALIZABLE",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/test-demo/api/isolation/serializable",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "test-demo",
+                "api",
+                "isolation",
+                "serializable"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
       "name": "Get All Users",
       "request": {
         "method": "GET",
@@ -298,129 +486,6 @@
             "employees",
             "department",
             "1"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Transfer Employee - REQUIRED",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "\r\n{\r\n  \"departmentId\": 2,\r\n  \"raisePercent\": 5\r\n}\r\n",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:8080/test-demo/api/employees/11/transfer",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "test-demo",
-            "api",
-            "employees",
-            "11",
-            "transfer"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Reserve Seat - MANDATORY",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "url": {
-          "raw": "http://localhost:8080/test-demo/api/tx-demo/reserve-seat/1",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "test-demo",
-            "api",
-            "tx-demo",
-            "reserve-seat",
-            "1"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Student Enroll - REQUIRED + MANDATORY",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "url": {
-          "raw": "http://localhost:8080/test-demo/api/students/1/enroll/1",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "test-demo",
-            "api",
-            "students",
-            "1",
-            "enroll",
-            "1"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Isolation - READ_COMMITTED",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "http://localhost:8080/test-demo/api/isolation/read-committed",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "test-demo",
-            "api",
-            "isolation",
-            "read-committed"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Isolation - SERIALIZABLE",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "http://localhost:8080/test-demo/api/isolation/serializable",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "test-demo",
-            "api",
-            "isolation",
-            "serializable"
           ]
         }
       },

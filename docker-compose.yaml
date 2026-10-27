@@ -3,7 +3,7 @@ services:
     image: postgres:16
     container_name: school-postgres
     environment:
-      POSTGRES_DB: school_db
+      POSTGRES_DB: school_liquibase_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:

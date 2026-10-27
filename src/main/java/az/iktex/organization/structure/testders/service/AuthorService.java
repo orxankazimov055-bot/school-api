@@ -48,6 +48,16 @@ public class AuthorService {
         return authorMapper.toResponse(author);
     }
 
+    // Query Cache - olkeye gore muellifleri getirir
+    @Transactional(readOnly = true)
+    public List<AuthorResponse> getByCountry(String country) {
+
+        List<Author> authors =
+                authorRepository.findAllByCountry(country);
+
+        return authorMapper.toResponseList(authors);
+    }
+
     @Transactional
     public void delete(Long id) {
 

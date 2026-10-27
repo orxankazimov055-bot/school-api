@@ -18,7 +18,12 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    liquibaseCli
+}
+
 dependencies {
+    liquibaseCli 'info.picocli:picocli:4.7.7'
     // Spring Boot
     implementation 'org.springframework.boot:spring-boot-starter-webmvc'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -57,5 +62,37 @@ tasks.named('test') {
     testLogging {
         events "passed", "failed", "skipped"
         showStandardStreams = true
+    }
+}
+
+// Uses the same Liquibase and PostgreSQL versions as the application.
+def migrationCommands = [
+    liquibaseHelp: ['--help'],
+    liquibaseStatus: ['status', '--verbose'],
+    liquibaseValidate: ['validate'],
+    liquibaseUpdate: ['update', '--context-filter=dev'],
+    liquibaseRollbackSql: ['rollback-sql'],
+    liquibaseRollback: ['rollback']
+]
+migrationCommands.each { taskName, commandArgs ->
+    tasks.register(taskName, JavaExec) {
+        group = 'Liquibase'
+        description = "Run Liquibase ${commandArgs.first()} against the configured database"
+        classpath = sourceSets.main.runtimeClasspath + configurations.liquibaseCli
+        mainClass = 'liquibase.integration.commandline.LiquibaseCommandLine'
+        systemProperty 'user.language', 'en'
+        systemProperty 'user.country', 'US'
+        environment 'LIQUIBASE_COMMAND_PASSWORD', System.getenv('LIQUIBASE_COMMAND_PASSWORD') ?: 'postgres'
+        args '--search-path=src/main/resources',
+             '--changelog-file=db/changelog/db.changelog-master.yaml',
+             "--url=${System.getenv('LIQUIBASE_COMMAND_URL') ?: 'jdbc:postgresql://localhost:5432/school_liquibase_db'}",
+             "--username=${System.getenv('LIQUIBASE_COMMAND_USERNAME') ?: 'postgres'}"
+        args commandArgs
+        if (taskName in ['liquibaseRollbackSql', 'liquibaseRollback']) {
+            args "--tag=${providers.gradleProperty('rollbackTag').getOrElse('v1.0')}"
+        }
+        if (providers.gradleProperty('liquibaseHelp').isPresent()) {
+            args '--help'
+        }
     }
 }

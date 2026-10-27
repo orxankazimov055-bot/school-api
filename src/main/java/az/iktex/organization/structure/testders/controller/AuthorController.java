@@ -32,6 +32,14 @@ public class AuthorController {
         return authorService.getAll();
     }
 
+    // Query Cache - olkeye gore muellifleri axtarir
+    @GetMapping("/by-country")
+    public List<AuthorResponse> getByCountry(
+            @RequestParam String country) {
+
+        return authorService.getByCountry(country);
+    }
+
     @GetMapping("/{id}")
     public AuthorResponse getById(
             @PathVariable Long id) {
