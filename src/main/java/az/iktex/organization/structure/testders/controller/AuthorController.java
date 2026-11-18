@@ -1,4 +1,3 @@
-
 package az.iktex.organization.structure.testders.controller;
 
 import az.iktex.organization.structure.testders.request.AuthorRequest;
@@ -6,7 +5,9 @@ import az.iktex.organization.structure.testders.response.AuthorResponse;
 import az.iktex.organization.structure.testders.service.AuthorService;
 
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,6 +41,7 @@ public class AuthorController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(
             @PathVariable Long id) {

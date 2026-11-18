@@ -1,4 +1,3 @@
-
 package az.iktex.organization.structure.testders.controller;
 
 import az.iktex.organization.structure.testders.request.EmployeeRequest;
@@ -6,8 +5,10 @@ import az.iktex.organization.structure.testders.response.EmployeeResponse;
 import az.iktex.organization.structure.testders.service.EmployeeService;
 
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -53,6 +54,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> delete(
             @PathVariable Long id) {
 

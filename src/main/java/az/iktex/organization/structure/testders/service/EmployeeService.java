@@ -3,18 +3,21 @@ package az.iktex.organization.structure.testders.service;
 
 import az.iktex.organization.structure.testders.entity.Department;
 import az.iktex.organization.structure.testders.entity.Employee;
+import az.iktex.organization.structure.testders.enums.ErrorCode;
+import az.iktex.organization.structure.testders.exception.AlreadyExistsException;
+import az.iktex.organization.structure.testders.exception.InvalidRequestException;
+import az.iktex.organization.structure.testders.exception.NotFoundException;
 import az.iktex.organization.structure.testders.mapper.EmployeeMapper;
 import az.iktex.organization.structure.testders.repository.DepartmentRepository;
 import az.iktex.organization.structure.testders.repository.EmployeeRepository;
 import az.iktex.organization.structure.testders.request.EmployeeRequest;
 import az.iktex.organization.structure.testders.response.EmployeeResponse;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -26,6 +29,7 @@ public class EmployeeService {
     private final DepartmentRepository departmentRepository;
     private final EmployeeMapper employeeMapper;
 
+    // CREATE
     @Transactional
     public EmployeeResponse create(
             Long departmentId,
@@ -33,13 +37,26 @@ public class EmployeeService {
 
         Department department = departmentRepository.findById(departmentId)
                 .orElseThrow(() ->
-                        new EntityNotFoundException(
-                                "Department tapilmadi: " + departmentId
+                        new NotFoundException(
+                                ErrorCode.DEPARTMENT_NOT_FOUND,
+                                departmentId
                         )
                 );
 
-        Employee employee = employeeMapper.toEntity(request);
+        validateSalary(request.salary());
 
+        // Eyni Department daxilində eyni adlı işçi varsa
+        if (employeeRepository.existsByDepartmentIdAndNameAndSurname(
+                departmentId,
+                request.name(),
+                request.surname()
+        )) {
+            throw new AlreadyExistsException(
+                    ErrorCode.EMPLOYEE_ALREADY_EXISTS
+            );
+        }
+
+        Employee employee = employeeMapper.toEntity(request);
         employee.setDepartment(department);
 
         Employee saved = employeeRepository.save(employee);
@@ -47,18 +64,21 @@ public class EmployeeService {
         return employeeMapper.toResponse(saved);
     }
 
+    // GET BY ID
     public EmployeeResponse getById(Long id) {
 
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() ->
-                        new EntityNotFoundException(
-                                "Employee tapilmadi: " + id
+                        new NotFoundException(
+                                ErrorCode.EMPLOYEE_NOT_FOUND,
+                                id
                         )
                 );
 
         return employeeMapper.toResponse(employee);
     }
 
+    // GET ALL
     public List<EmployeeResponse> getAll() {
 
         return employeeMapper.toResponseList(
@@ -66,6 +86,7 @@ public class EmployeeService {
         );
     }
 
+    // UPDATE
     @Transactional
     public EmployeeResponse update(
             Long id,
@@ -73,26 +94,43 @@ public class EmployeeService {
 
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() ->
-                        new EntityNotFoundException(
-                                "Employee tapilmadi: " + id
+                        new NotFoundException(
+                                ErrorCode.EMPLOYEE_NOT_FOUND,
+                                id
                         )
                 );
+
+        validateSalary(request.salary());
 
         employeeMapper.updateEntity(request, employee);
 
         return employeeMapper.toResponse(employee);
     }
 
+    // DELETE
     @Transactional
     public void delete(Long id) {
 
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() ->
-                        new EntityNotFoundException(
-                                "Employee tapilmadi: " + id
+                        new NotFoundException(
+                                ErrorCode.EMPLOYEE_NOT_FOUND,
+                                id
                         )
                 );
 
         employeeRepository.delete(employee);
+    }
+
+    // SALARY VALIDATION
+    private void validateSalary(BigDecimal salary) {
+
+        if (salary == null ||
+                salary.compareTo(BigDecimal.ZERO) <= 0) {
+
+            throw new InvalidRequestException(
+                    ErrorCode.EMPLOYEE_SALARY_RANGE
+            );
+        }
     }
 }

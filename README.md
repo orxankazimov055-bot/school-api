@@ -1,113 +1,86 @@
-# School API — Spring Boot + Spring Data JPA
 
-## Layihə haqqında
+# School API
 
-School API — Java 25, Spring Boot 4 və PostgreSQL istifadə edilərək hazırlanmış REST API layihəsidir.
+Spring Boot ilə hazırlanmış məktəb idarəetmə sistemi.
 
-Layihədə JPA entity əlaqələri, Spring Data JPA repository-ləri, DTO, MapStruct mapper, service və controller qatları istifadə olunur.
-
-## İstifadə olunan texnologiyalar
+## Texnologiyalar
 
 - Java 25
-- Spring Boot 4
-- Spring Data JPA / Hibernate
-- PostgreSQL 16
-- Docker Compose
+- Spring Boot
+- Spring Security
+- Spring Data JPA
+- PostgreSQL
+- JWT (JJWT)
 - Gradle
+- Docker
+- Swagger / OpenAPI
 - Lombok
-- MapStruct
-- Postman
+
+## Təhlükəsizlik
+
+- JWT Access və Refresh Token
+- BCrypt ilə şifrələrin hash edilməsi
+- ADMIN, MANAGER və USER rolları
+- Token Blacklist
+- Refresh Token Rotation
+- Refresh Token Reuse Detection
+- Sessiyaların idarə olunması
+- Logout və Logout All
+- Şifrənin dəyişdirilməsi
+- Hesabların aktiv və deaktiv edilməsi
+- Token Cleanup Scheduler
+- Azərbaycan, ingilis və rus dillərində xəta mesajları
+
+## Environment Variables
+
+Layihəni işə salmazdan əvvəl aşağıdakı mühit dəyişənləri təyin edilməlidir:
+
+| Variable | Description |
+|---|---|
+| DB_PASSWORD | PostgreSQL şifrəsi |
+| JWT_SECRET | Base64 formatında JWT secret |
+| ADMIN_PASSWORD | Admin hesabının şifrəsi |
+
+IntelliJ IDEA:
+
+Run → Edit Configurations → Environment variables
+
+Real şifrələr və JWT secret GitHub reposunda saxlanılmamalıdır.
 
 ## Layihənin işə salınması
 
-1. Java 25 və Docker Desktop quraşdırın.
-2. Terminalda layihənin əsas qovluğuna keçin.
-3. PostgreSQL konteynerini başladın:
-
-```bash
+```powershell
 docker compose up -d
+.\gradlew bootRun
 ```
 
-4. Spring Boot tətbiqini başladın:
+## Swagger
 
-```bash
-./gradlew bootRun
-```
+http://localhost:8080/test-demo/swagger-ui/index.html
 
-Windows üçün:
+## Authentication Endpoints
 
-```bat
-gradlew.bat bootRun
-```
-
-5. API-nin əsas ünvanı:
-
-`http://localhost:8080/test-demo`
-
-Verilənlər bazası: `school_db`
-
-## JPA əlaqələri
-
-| Əlaqə | Entity-lər |
-|---|---|
-| OneToOne | User — Passport |
-| OneToMany / ManyToOne | Department — Employee |
-| ManyToMany | Student — Course |
-| ManyToMany (ara entity) | Author — AuthorBook — Book |
-
-## REST API endpoint-ləri
-
-Bütün ünvanlar `http://localhost:8080/test-demo` ünvanından başlayır.
-
-### User və Passport
-
-| Metod | Endpoint | İzah |
+| Method | Endpoint | Description |
 |---|---|---|
-| GET | `/api/users` | İstifadəçiləri göstərmək |
-| GET | `/api/users/{id}` | İstifadəçini ID ilə tapmaq |
-| POST | `/api/users` | İstifadəçi yaratmaq |
-| POST | `/api/users/{id}/passport` | Pasport əlavə etmək |
-| DELETE | `/api/users/{id}/passport` | Pasport əlaqəsini silmək |
+| POST | /api/auth/register | Yeni hesab |
+| POST | /api/auth/login | Sistemə giriş |
+| POST | /api/auth/refresh | Token yeniləmə |
+| POST | /api/auth/logout | Cari sessiyadan çıxış |
+| POST | /api/auth/logout-all | Bütün sessiyalardan çıxış |
+| GET | /api/auth/me | Hesab məlumatları |
+| GET | /api/auth/sessions | Aktiv sessiyalar |
+| DELETE | /api/auth/sessions/{sessionId} | Sessiyanın ləğvi |
+| PUT | /api/auth/password | Şifrəni dəyişmək |
 
-### Department və Employee
+## Token müddətləri
 
-| Metod | Endpoint | İzah |
-|---|---|---|
-| POST | `/api/departments` | Departament yaratmaq |
-| GET | `/api/departments/{id}` | Departamenti göstərmək |
-| POST | `/api/employees/department/{id}` | Departamentə işçi əlavə etmək |
-| DELETE | `/api/employees/{id}` | İşçini silmək |
+- Access Token: 15 dəqiqə
+- Refresh Token: 7 gün
 
-### Student və Course
+## Security Errors
 
-| Metod | Endpoint | İzah |
-|---|---|---|
-| POST | `/api/students` | Tələbə yaratmaq |
-| GET | `/api/students/{id}` | Tələbəni göstərmək |
-| POST | `/api/courses` | Kurs yaratmaq |
-| POST | `/api/students/{studentId}/courses/{courseId}` | Tələbəni kursa əlavə etmək |
-
-### Author, Book və AuthorBook
-
-| Metod | Endpoint | İzah |
-|---|---|---|
-| POST | `/api/authors` | Müəllif yaratmaq |
-| GET | `/api/authors` | Müəllifləri göstərmək |
-| POST | `/api/books` | Kitab yaratmaq |
-| POST | `/api/author-books/authors/{authorId}/books/{bookId}` | Müəlliflə kitab arasında əlaqə yaratmaq |
-| GET | `/api/author-books` | Müəllif-kitab əlaqələrini göstərmək |
-| DELETE | `/api/author-books/authors/{authorId}/books/{bookId}` | Müəllif-kitab əlaqəsini silmək |
-
-Qeyd: Yuxarıdakı siyahı indiyədək yoxladığımız endpoint-ləri əhatə edir. GitHub-a yükləməzdən əvvəl controller-lərdəki bütün digər endpoint-lər də siyahıya əlavə edilməlidir.
-
-## JPA davranışları
-
-- `cascade` əlaqəli entity-lərdə hansı əməliyyatların ötürüləcəyini müəyyən edir.
-- `orphanRemoval` əlaqədən çıxarılan uşaq entity-nin silinməsini təmin edir.
-- `mappedBy` iki istiqamətli əlaqədə sahib olmayan tərəfi göstərir.
-- `student_course` tələbə-kurs əlaqələrini saxlayır.
-- `author_book` müəllif-kitab əlaqəsini ayrıca entity vasitəsilə saxlayır.
-
-## Postman
-
-API endpoint-lərinin testləri Postman vasitəsilə aparılır. Postman collection JSON faylı layihə ilə birlikdə repoya əlavə olunmalıdır.
+- 401 Unauthorized
+- 403 Forbidden
+- ErrorCode
+- TraceId
+- Internationalization (i18n)

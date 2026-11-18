@@ -2,6 +2,8 @@
 package az.iktex.organization.structure.testders.service;
 
 import az.iktex.organization.structure.testders.entity.Course;
+import az.iktex.organization.structure.testders.enums.ErrorCode;
+import az.iktex.organization.structure.testders.exception.NotFoundException;
 import az.iktex.organization.structure.testders.mapper.CourseMapper;
 import az.iktex.organization.structure.testders.repository.CourseRepository;
 import az.iktex.organization.structure.testders.request.CourseRequest;
@@ -43,7 +45,11 @@ public class CourseService {
 
         Course course = courseRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Course tapilmadi: " + id));
+                        new NotFoundException(
+                                ErrorCode.COURSE_NOT_FOUND,
+                                id
+                        )
+                );
 
         return courseMapper.toResponse(course);
     }
