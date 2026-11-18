@@ -1,4 +1,3 @@
-
 package az.iktex.organization.structure.testders.controller;
 
 import az.iktex.organization.structure.testders.request.DepartmentRequest;
@@ -6,8 +5,10 @@ import az.iktex.organization.structure.testders.response.DepartmentResponse;
 import az.iktex.organization.structure.testders.service.DepartmentService;
 
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -52,6 +53,7 @@ public class DepartmentController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> delete(
             @PathVariable Long id) {
 

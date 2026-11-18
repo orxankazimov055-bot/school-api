@@ -1,4 +1,3 @@
-
 package az.iktex.organization.structure.testders.controller;
 
 import az.iktex.organization.structure.testders.enums.Gender;
@@ -12,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -75,6 +75,7 @@ public class UserController {
 
     // İstifadəçini silmək
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> delete(
             @PathVariable Long id) {
 
@@ -83,6 +84,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    // Pasport əlavə etmək
     @PostMapping("/{id}/passport")
     public ResponseEntity<PassportResponse> addPassport(
             @PathVariable Long id,
@@ -96,6 +98,7 @@ public class UserController {
                 .body(response);
     }
 
+    // Pasport məlumatlarını göstərmək
     @GetMapping("/{id}/passport")
     public PassportResponse getPassport(
             @PathVariable Long id) {
@@ -103,7 +106,9 @@ public class UserController {
         return userService.getPassport(id);
     }
 
+    // Pasportu silmək
     @DeleteMapping("/{id}/passport")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deletePassport(
             @PathVariable Long id) {
 
@@ -111,5 +116,4 @@ public class UserController {
 
         return ResponseEntity.noContent().build();
     }
-
 }

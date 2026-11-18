@@ -3,6 +3,8 @@ package az.iktex.organization.structure.testders.service;
 
 import az.iktex.organization.structure.testders.entity.Student;
 import az.iktex.organization.structure.testders.entity.Course;
+import az.iktex.organization.structure.testders.enums.ErrorCode;
+import az.iktex.organization.structure.testders.exception.NotFoundException;
 import az.iktex.organization.structure.testders.repository.StudentRepository;
 import az.iktex.organization.structure.testders.repository.CourseRepository;
 import az.iktex.organization.structure.testders.mapper.StudentMapper;
@@ -47,7 +49,11 @@ public class StudentService {
 
         Student student = studentRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Student tapilmadi: " + id));
+                        new NotFoundException(
+                                ErrorCode.STUDENT_NOT_FOUND,
+                                id
+                        )
+                );
 
         return studentMapper.toDetailResponse(student);
     }
@@ -57,11 +63,19 @@ public class StudentService {
 
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() ->
-                        new RuntimeException("Student tapilmadi"));
+                        new NotFoundException(
+                                ErrorCode.STUDENT_NOT_FOUND,
+                                studentId
+                        )
+                );
 
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() ->
-                        new RuntimeException("Course tapilmadi"));
+                        new NotFoundException(
+                                ErrorCode.COURSE_NOT_FOUND,
+                                courseId
+                        )
+                );
 
         student.addCourse(course);
 
@@ -73,7 +87,11 @@ public class StudentService {
 
         Student student = studentRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Student tapilmadi"));
+                        new NotFoundException(
+                                ErrorCode.STUDENT_NOT_FOUND,
+                                id
+                        )
+                );
 
         for (Course course : new HashSet<>(student.getCourses())) {
             student.removeCourse(course);

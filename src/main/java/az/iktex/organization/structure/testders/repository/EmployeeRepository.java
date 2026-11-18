@@ -1,3 +1,34 @@
+
 package az.iktex.organization.structure.testders.repository;
-import az.iktex.organization.structure.testders.entity.Employee; import org.springframework.data.jpa.repository.*; import org.springframework.data.repository.query.Param; import java.math.BigDecimal; import java.util.*;
-public interface EmployeeRepository extends JpaRepository<Employee,Long> { List<Employee> findAllByDepartmentId(Long departmentId); List<Employee> findAllBySalaryBetween(BigDecimal min,BigDecimal max); boolean existsByDepartmentIdAndNameAndSurname(Long id,String name,String surname); @Query("select avg(e.salary) from Employee e where e.department.id=:id") BigDecimal averageSalary(@Param("id") Long id); @Query("select e from Employee e join fetch e.department where e.id=:id") Optional<Employee> findDetailById(@Param("id") Long id); }
+
+import az.iktex.organization.structure.testders.entity.Employee;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
+
+public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+
+    List<Employee> findAllByDepartmentId(Long departmentId);
+
+    List<Employee> findAllBySalaryBetween(
+            BigDecimal min,
+            BigDecimal max
+    );
+
+    // Eyni Department daxilində işçi mövcuddurmu?
+    boolean existsByDepartmentIdAndNameAndSurname(
+            Long departmentId,
+            String name,
+            String surname
+    );
+
+    @Query("select avg(e.salary) from Employee e where e.department.id = :id")
+    BigDecimal averageSalary(@Param("id") Long id);
+
+    @Query("select e from Employee e join fetch e.department where e.id = :id")
+    Optional<Employee> findDetailById(@Param("id") Long id);
+}
